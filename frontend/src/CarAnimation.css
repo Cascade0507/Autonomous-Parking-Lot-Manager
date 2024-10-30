@@ -1,0 +1,75 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .road {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    background-color: #4a4a4a;
+    overflow: hidden;
+    /*border: 2px solid red;  Temporary border to ensure visibility */
+  }
+  
+  /* Middle dashed line on the road */
+  .road::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-image: repeating-linear-gradient(
+      to right,
+      white 0,
+      white 70px,
+      transparent 60px,
+      transparent 120px
+    );
+    transform: translateY(-50%);
+  }
+  
+  .car {
+    position: absolute;
+    left: -200px;
+    bottom: 10px;
+    width: 150px;
+    height: 80px;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    transition: left 2s ease-in-out;
+  }
+  
+  .drive-in {
+    left: 0;
+  }
+  
+  .drive-out {
+    left: 100%;
+  }
+  
+  .button-container {
+    margin: 20px;
+  }
+  
+  .button-container-allow {
+    margin: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
