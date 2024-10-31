@@ -1,55 +1,72 @@
+// CarAnimation.jsx
 import React, { useState, useEffect } from 'react';
 import './CarAnimation.css';
+import CarForm from './CarForm';
+import CarControls from './CarControls';
+import Road from './Road';
+import ParkingSpace from './ParkingSpace';
 
 const CarAnimation = () => {
-  const [cars, setCars] = useState([]);
-  const [carCount, setCarCount] = useState(0);
-  const [carAllowed, setCarAllowed] = useState(0);
+  const [cars, setCars] = useState([]); // Track all cars (both moving and parked)
+  const [carIndex, setCarIndex] = useState(0); // Track the current car to drive out
+  const [vehicleNumber, setVehicleNumber] = useState(''); // Track vehicle number input
+  const [parkingSpot, setParkingSpot] = useState(''); // Track parking spot input
 
-  // Array of car images to choose from
-  const carImages = [
-    'car.png', // Add paths to your car images
-    'car2.png',
-    'car3.png',
-  ];
+  const carImages = ['car.png', 'car2.png', 'car3.png']; // Array of car images
 
-  const AllowNext = () => {
-    // Randomly select a car image
-    const randomCarImage = carImages[Math.floor(Math.random() * carImages.length)];
-
-    // Add a new car with a specific image
-    setCars([...cars, { id: carCount, driveOut: false, image: randomCarImage }]);
-    setCarCount(carCount + 1);
+  const allowNextCar = () => {
+    // Ensure inputs are filled
+    if (vehicleNumber && parkingSpot) {
+      const randomCarImage = carImages[Math.floor(Math.random() * carImages.length)];
+      setCars([...cars, { id: carIndex, status: 'drive-in', image: randomCarImage, vehicleNumber, parkingSpot }]);
+      setCarIndex(carIndex + 1); // Increment the index for the next car
+      setVehicleNumber(''); // Clear inputs
+      setParkingSpot('');
+    } else {
+      alert("Please enter both vehicle number and parking spot.");
+    }
   };
 
   const driveCar = () => {
-    if (carAllowed >= cars.length) return;
-
-    // Update the car to drive out
-    setCars(cars.map((car, index) => 
-      index === carAllowed ? { ...car, driveOut: true } : car
-    ));
-    setCarAllowed(carAllowed + 1);
+    // If there are cars waiting to be driven out
+    if (carIndex > 0 && carIndex <= cars.length) {
+      setCars((prevCars) =>
+        prevCars.map((car, idx) =>
+          idx === carIndex - 1 ? { ...car, status: 'drive-out' } : car
+        )
+      );
+    }
   };
+
+  useEffect(() => {
+    const lastCar = cars.find((car) => car.status === 'drive-out');
+    if (lastCar) {
+      // Move the car to parking after it finishes the transition
+      setTimeout(() => {
+        setCars((prevCars) =>
+          prevCars.map((car) =>
+            car.id === lastCar.id ? { ...car, status: 'parked' } : car
+          )
+        );
+      }, 2000); // Timing matches the CSS transition duration
+    }
+  }, [cars]);
 
   return (
     <div className="container">
-      <div className="button-container">
-        <button onClick={driveCar}>Allow the Car</button>
-      </div>
-      <div className="button-container-allow">
-        <button onClick={AllowNext}>Accept Next Car</button>
-      </div>
-
-      <div className="road">
-        {cars.map(car => (
-          <div
-            key={car.id}
-            className={`car ${car.driveOut ? 'drive-out' : 'drive-in'}`}
-            style={{ backgroundImage: `url(${car.image})` }}
-          ></div>
-        ))}
-      </div>
+      <CarForm
+        vehicleNumber={vehicleNumber}
+        setVehicleNumber={setVehicleNumber}
+        parkingSpot={parkingSpot}
+        setParkingSpot={setParkingSpot}
+      />
+      <CarControls
+        allowNextCar={allowNextCar}
+        driveCar={driveCar}
+        isAllowDisabled={!vehicleNumber || !parkingSpot}
+      />
+      <Road cars={cars} />
+      <ParkingSpace parkedCars={cars.filter((car) => car.status === 'parked')} />
     </div>
   );
 };

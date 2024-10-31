@@ -5,6 +5,7 @@ import './App.css'
 import axios from 'axios'
 import CarAnimation from './CarAnimation'
 import './CarAnimation.css'
+import Navbar from './NavBar'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -20,11 +21,12 @@ function App() {
   // },[]); 
 
   return (
-    <>
-    <div>
-    <CarAnimation/>
+    <div className='app'>
+      <Navbar/>
+      <div className='content'>
+        <CarAnimation/>
+      </div>
     </div>
-    </>
   )
 }
 
