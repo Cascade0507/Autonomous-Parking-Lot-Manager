@@ -7,6 +7,7 @@ import CarAnimation from './CarAnimation'
 import './CarAnimation.css'
 import Navbar from './NavBar'
 
+
 function App() {
   // const [count, setCount] = useState(0)
   // const [x,setX] = useState([])

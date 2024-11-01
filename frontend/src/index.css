@@ -35,6 +35,11 @@ h1 {
   line-height: 1.1;
 }
 */
+
+body{
+  overflow-x: hidden;
+}
+
 button {
   color: white;
   border-radius: 8px;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CarControls = ({ allowNextCar, driveCar, isAllowDisabled }) => (
-  <div>
+  <div className='buttons'>
     <div className="button-container-allow">
       <button onClick={allowNextCar} disabled={isAllowDisabled}>Accept Next Car</button>
     </div>
