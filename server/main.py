@@ -17,5 +17,12 @@ def users():
         }
     )
 
+
+
+@app.route('/admin',methods=['GET'])
+def admin(user):
+    if user=='Tejas':
+        return True
+
 if __name__=="__main__":
     app.run(debug=True,port=8080)
