@@ -1,0 +1,28 @@
+/* AvailableSpotsTable.css */
+.available-spots-table {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .available-spots-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .available-spots-table th, .available-spots-table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .available-spots-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .available-spots-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
