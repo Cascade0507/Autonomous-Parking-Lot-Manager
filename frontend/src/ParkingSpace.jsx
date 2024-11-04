@@ -1,53 +1,17 @@
-// import React from 'react';
-// import './ParkingSpace.css';
-
-// const ParkingSpace = ({ parkedCars }) => {
-//   const numSpotsPerLot = 10; // Number of parking spots per lot
-  
-//   return (
-//     <div className="parking-container">
-//       {/* First Parking Lot */}
-//       <div className="parking-grid">
-//         {Array.from({ length: numSpotsPerLot }).map((_, index) => (
-//           <div key={index} className="parking-spot">
-//             {parkedCars[index] && (
-//               <div
-//                 className="car parked-car"
-//                 style={{ backgroundImage: `url(${parkedCars[index].image})`, position: 'absolute' }}
-//               ></div>
-//             )}
-//           </div>
-//         ))}
-//       </div>
-//       <br></br><br></br><br></br>
-//       {/* Second Parking Lot */}
-//       <div className="parking-grid">
-//         {Array.from({ length: numSpotsPerLot }).map((_, index) => (
-//           <div key={index + numSpotsPerLot} className="parking-spot">
-//             {parkedCars[index + numSpotsPerLot] && (
-//               <div
-//                 className="car parked-car"
-//                 style={{ backgroundImage: `url(${parkedCars[index + numSpotsPerLot].image})`, position: 'absolute' }}
-//               ></div>
-//             )}
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ParkingSpace;
-
+// ParkingSpace.jsx
 import React from 'react';
 import './ParkingSpace.css';
 
 const ParkingSpace = ({ parkedCars = [] }) => {
   const spotsPerLot = 10;
-
-  // Filter cars for each lot based on the parking spot number
-  const lot1Cars = parkedCars.filter(car => car.parkingSpot <= spotsPerLot);
-  const lot2Cars = parkedCars.filter(car => car.parkingSpot > spotsPerLot);
+   // console.log(parkedCars);
+  // Function to get the parking lot and index from the spot ID
+  const getSpotIndex = (spotId) => {
+    console.log("spotId type:", typeof spotId, "value:", spotId);
+    const lotNumber = parseInt(spotId.charAt(4)); // Get the X in SPOTXY
+    const spotNumber = parseInt(spotId.slice(5)); // Get everything after the 6th character
+    return { lotNumber, spotNumber };
+  };
 
   return (
     <div className="parking-lots-container">
@@ -56,10 +20,14 @@ const ParkingSpace = ({ parkedCars = [] }) => {
         <div className="parking-grid">
           {Array.from({ length: spotsPerLot }).map((_, index) => (
             <div key={index} className="parking-spot">
-              {lot1Cars.find((car) => car.parkingSpot === index + 1) && (
+              {parkedCars.some((car) => getSpotIndex(car.parkingSpot).lotNumber === 0 && getSpotIndex(car.parkingSpot).spotNumber === index + 1) && (
                 <div
                   className="car parked-car"
-                  style={{ backgroundImage: `url(${lot1Cars.find((car) => car.parkingSpot === index + 1).image})` }}
+                  style={{
+                    backgroundImage: `url(${
+                      parkedCars.find(car => getSpotIndex(car.parkingSpot).lotNumber === 0 && getSpotIndex(car.parkingSpot).spotNumber === index + 1).image
+                    })`
+                  }}
                 ></div>
               )}
             </div>
@@ -71,11 +39,15 @@ const ParkingSpace = ({ parkedCars = [] }) => {
         <h3>Parking Lot 2</h3>
         <div className="parking-grid">
           {Array.from({ length: spotsPerLot }).map((_, index) => (
-            <div key={index} className="parking-spot">
-              {lot2Cars.find((car) => car.parkingSpot === index + 1 + spotsPerLot) && (
+            <div key={index + spotsPerLot} className="parking-spot">
+              {parkedCars.some((car) => getSpotIndex(car.parkingSpot).lotNumber === 1 && getSpotIndex(car.parkingSpot).spotNumber === index + 1) && (
                 <div
                   className="car parked-car"
-                  style={{ backgroundImage: `url(${lot2Cars.find((car) => car.parkingSpot === index + 1 + spotsPerLot).image})` }}
+                  style={{
+                    backgroundImage: `url(${
+                      parkedCars.find(car => getSpotIndex(car.parkingSpot).lotNumber === 1 && getSpotIndex(car.parkingSpot).spotNumber === index + 1).image
+                    })`
+                  }}
                 ></div>
               )}
             </div>
@@ -88,3 +60,4 @@ const ParkingSpace = ({ parkedCars = [] }) => {
 
 export default ParkingSpace;
 
+//vklnsdvadsjkkhv
